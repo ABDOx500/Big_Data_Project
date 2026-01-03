@@ -11,10 +11,12 @@ This package contains modules for:
 __version__ = "1.0.0"
 __author__ = "Spam Detection Team"
 
-from . import data_preprocessing
-from . import feature_engineering
-from . import train_models
-from . import prediction
+# Lazy imports to avoid circular dependencies
+# Import modules explicitly when needed:
+#   from spark_ml.data_preprocessing import DataPreprocessor
+#   from spark_ml.feature_engineering import FeatureEngineer
+#   from spark_ml.train_models import SpamModelTrainer
+#   from spark_ml.prediction import SpamPredictor
 
 __all__ = [
     "data_preprocessing",

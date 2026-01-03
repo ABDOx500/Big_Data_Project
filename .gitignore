@@ -161,6 +161,7 @@ models/random_forest/
 # Spark
 spark-warehouse/
 metastore_db/
+spark_temp/
 derby.log
 *.crc
 
@@ -173,4 +174,4 @@ tmp/
 temp/
 *.tmp
 
-PRD.txt/
+PRD.txt

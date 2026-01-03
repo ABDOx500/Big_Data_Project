@@ -1,0 +1,27 @@
+{
+  "naive_bayes": {
+    "model_name": "Naive Bayes",
+    "accuracy": 0.9849397590361446,
+    "precision": 0.9849889209709332,
+    "recall": 0.9849397590361446,
+    "f1_score": 0.9849623528481098,
+    "auc_roc": 0.1655767567975957
+  },
+  "logistic_regression": {
+    "model_name": "Logistic Regression",
+    "accuracy": 0.9759036144578314,
+    "precision": 0.9757492238111218,
+    "recall": 0.9759036144578314,
+    "f1_score": 0.9752792753328098,
+    "auc_roc": 0.9963399175641984
+  },
+  "random_forest": {
+    "model_name": "Random Forest",
+    "accuracy": 0.8995983935742972,
+    "precision": 0.9100896795121972,
+    "recall": 0.8995983935742973,
+    "f1_score": 0.874163104358019,
+    "auc_roc": 0.9895654071841713
+  },
+  "best_model": "naive_bayes"
+}

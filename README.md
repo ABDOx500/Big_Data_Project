@@ -327,12 +327,11 @@ Get model statistics.
 
 1. **Deep Learning**: Implement LSTM/Transformer models for better accuracy
 2. **Multi-language Support**: Extend to support multiple languages
-3. **Real-time Streaming**: Add Spark Streaming for real-time message processing
-4. **Email Integration**: Direct email inbox monitoring
-5. **User Feedback Loop**: Allow users to correct predictions for model improvement
-6. **Model Versioning**: Implement MLflow for model tracking
-7. **Containerization**: Docker support for easier deployment
-8. **Cloud Deployment**: AWS/GCP deployment scripts
+3. **Email Integration**: Direct email inbox monitoring
+4. **User Feedback Loop**: Allow users to correct predictions for model improvement
+5. **Model Versioning**: Implement MLflow for model tracking
+6. **Containerization**: Docker support for easier deployment
+7. **Cloud Deployment**: AWS/GCP deployment scripts
 
 ## 📄 License
 

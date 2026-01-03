@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Real-time spam detection using Apache Spark ML. Classify SMS and email messages instantly.">
+    <meta name="keywords" content="spam detection, machine learning, Apache Spark, PySpark, text classification">
+    <meta name="author" content="Big Data Project">
+
+    <title>Spam Detection System | PySpark ML</title>
+
+    <!-- Favicon -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🛡️</span>
+                    <h1>Spam Detection System</h1>
+                </div>
+                <div class="header-info">
+                    <span class="status-indicator" id="status-indicator">
+                        <span class="status-dot"></span>
+                        <span class="status-text">Online</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- Hero Section -->
+            <section class="hero">
+                <h2>Real-time Spam Detection </h2>
+                <p class="hero-subtitle">Classify SMS and email messages instantly using machine learning</p>
+            </section>
+
+            <!-- Main Grid -->
+            <div class="grid">
+
+                <!-- Left Column: Input Section -->
+                <div class="card input-section">
+                    <h3>
+                        <span class="icon">✉️</span>
+                        Check Your Message
+                    </h3>
+
+                    <form id="prediction-form">
+                        <div class="form-group">
+                            <label for="message-input">Enter message to classify:</label>
+                            <textarea id="message-input" name="message" rows="6"
+                                placeholder="Type or paste your message here... (e.g., 'Congratulations! You won a free iPhone! Click here to claim.')"
+                                required></textarea>
+                            <div class="char-counter">
+                                <span id="char-count">0</span> characters
+                            </div>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary" id="predict-btn">
+                            <span class="btn-text">Analyze Message</span>
+                            <span class="btn-loader" style="display: none;">
+                                <span class="spinner"></span>
+                                Analyzing...
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- Quick Examples -->
+                    <div class="quick-examples">
+                        <p class="examples-title">Quick examples:</p>
+                        <div class="example-buttons">
+                            <button class="btn-example" data-example="spam">Spam Example</button>
+                            <button class="btn-example" data-example="ham">Ham Example</button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Right Column: Result Section -->
+                <div class="card result-section">
+                    <h3>
+                        <span class="icon">📊</span>
+                        Prediction Result
+                    </h3>
+
+                    <!-- Initial State -->
+                    <div id="result-placeholder" class="result-placeholder">
+                        <div class="placeholder-icon">🔍</div>
+                        <p>Enter a message and click "Analyze Message" to see the prediction</p>
+                    </div>
+
+                    <!-- Result Display -->
+                    <div id="result-display" class="result-display" style="display: none;">
+                        <div class="result-header">
+                            <div class="result-label" id="result-label">SPAM</div>
+                            <div class="result-confidence">
+                                <span class="confidence-label">Confidence:</span>
+                                <span class="confidence-value" id="confidence-value">95.2%</span>
+                            </div>
+                        </div>
+
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" id="confidence-fill"></div>
+                        </div>
+
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Model Used:</span>
+                                <span class="detail-value" id="model-used">Logistic Regression</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Processing Time:</span>
+                                <span class="detail-value" id="processing-time">12 ms</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Timestamp:</span>
+                                <span class="detail-value" id="timestamp">2025-01-17 19:00:00</span>
+                            </div>
+                        </div>
+
+                        <div class="result-message" id="result-message">
+                            <p><strong>Analyzed Message:</strong></p>
+                            <p class="message-preview" id="message-preview"></p>
+                        </div>
+                    </div>
+
+                    <!-- Error Display -->
+                    <div id="error-display" class="error-display" style="display: none;">
+                        <div class="error-icon">⚠️</div>
+                        <p class="error-message" id="error-message"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <section class="stats-section">
+                <h3>
+                    <span class="icon">📈</span>
+                    Live Statistics
+                </h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📧</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="total-predictions">0</div>
+                            <div class="stat-label">Total Predictions</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚫</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="spam-count">0</div>
+                            <div class="stat-label">Spam Detected</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="ham-count">0</div>
+                            <div class="stat-label">Legitimate Messages</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <div class="stat-value" id="spam-percentage">0%</div>
+                            <div class="stat-label">Spam Percentage</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Predictions -->
+            <section class="history-section">
+                <div class="section-header">
+                    <h3>
+                        <span class="icon">🕒</span>
+                        Recent Predictions
+                    </h3>
+                    <button class="btn btn-secondary btn-sm" id="refresh-history">
+                        <span>🔄</span> Refresh
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="predictions-table" id="predictions-table">
+                        <thead>
+                            <tr>
+                                <th>Message</th>
+                                <th>Prediction</th>
+                                <th>Confidence</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                            <tr class="empty-state">
+                                <td colspan="4">No predictions yet. Start analyzing messages!</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Spam Detection System | Built with Apache Spark ML & Flask</p>
+                <p class="footer-meta">Academic Project | Big Data & Machine Learning</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
